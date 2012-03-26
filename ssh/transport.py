@@ -965,7 +965,7 @@ class Transport (threading.Thread):
             self.lock.release()
         return chan
 
-    def connect(self, hostkey=None, username='', password=None, pkey=None):
+    def connect(self, hostkey, username='', password=None, pkey=None):
         """
         Negotiate an SSH2 session, and optionally verify the server's host key
         and authenticate using a password or private key.  This is a shortcut
@@ -1013,6 +1013,8 @@ class Transport (threading.Thread):
                 self._log(DEBUG, 'Got     : %s: %s' % (key.get_name(), repr(str(key))))
                 raise SSHException('Bad host key from server')
             self._log(DEBUG, 'Host key verified (%s)' % hostkey.get_name())
+        else:
+            raise Exception("No host key provided")
 
         if (pkey is not None) or (password is not None):
             if password is not None:
